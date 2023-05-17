@@ -1,3 +1,3 @@
 export interface BaseUseCaseInterface {
-    execute(input: any): any;
+    execute(requestBody: any): Promise<any>;
 }

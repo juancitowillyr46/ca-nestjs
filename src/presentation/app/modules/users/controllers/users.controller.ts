@@ -3,50 +3,43 @@ import { UserUseCaseInterface } from 'src/application/usecases/users/contracts/u
 import { UserRequestDto } from '../dto/user-request.dto';
 import { ResponseMessage } from 'src/presentation/core/decorators/response.decorator';
 import { USER_INSERTED, USER_UPDATED } from '../constants/user.response.constant';
-import { UserResponseDto } from 'src/application/dtos/user-response.dto';
+//import { UserResponseDto } from 'src/application/dtos/users/user-response.dto';
+import { UserReadByIdParam } from 'src/application/types/users/user-read-by-id.type';
 
 @Controller('users')
 export class UsersController {
 
     constructor(
       @Inject('UserCreateUseCase') private userCreateUseCase: UserUseCaseInterface,
-      @Inject('UserUpdateUseCase') private userUpdateUseCase: UserUseCaseInterface,
+      // @Inject('UserUpdateUseCase') private userUpdateUseCase: UserUseCaseInterface,
       @Inject('UserReadByIdUseCase') private UserReadByIdUseCase: UserUseCaseInterface,
-      @Inject('UserReadAllUseCase') private UserReadAllUseCase: UserUseCaseInterface
+      // @Inject('UserReadAllUseCase') private UserReadAllUseCase: UserUseCaseInterface
     ){
 
     }
 
-    @Get()
-    getAllUser(): any {
-      return this.UserReadAllUseCase.execute({});
-    }
-
-    @Get(":id")
-    getUserById(@Param("id") id: string): UserResponseDto {
-      //try {
-        let userRequest = new UserRequestDto();
-        userRequest.id = id;
-        
-        let userEntity = this.UserReadByIdUseCase.execute(userRequest);
-        let userResponseDto = new UserResponseDto();
-        userResponseDto.id = userEntity.id;
-        return userResponseDto;
-      //} catch (error) { 
-        //throw new ForbiddenException(error);
-      //}
-      
-    }
+    // @Get()
+    // getAllUser(): any {
+    //   return this.UserReadAllUseCase.execute({});
+    // }
 
     @Post()
     @ResponseMessage(USER_INSERTED)
-    postUser(@Body() userRequest: UserRequestDto): boolean {
-      return this.userCreateUseCase.execute(userRequest);
+    async postUser(@Body() userRequest: UserRequestDto): Promise<boolean | null> {
+      return await this.userCreateUseCase.execute(userRequest);
     }
 
-    @Put(":id")
-    @ResponseMessage(USER_UPDATED)
-    putUser(@Param("id") id: string,@Body() userRequest: UserRequestDto): boolean {
-      return this.userUpdateUseCase.execute(userRequest);
+    @Get(":id")
+    async getUserById(@Param("id") id: string): Promise<UserReadByIdParam> {
+        let readById = this.UserReadByIdUseCase.execute({id: id});
+        return await readById;
     }
+
+
+
+    // @Put(":id")
+    // @ResponseMessage(USER_UPDATED)
+    // putUser(@Param("id") id: string,@Body() userRequest: UserRequestDto): boolean {
+    //   return this.userUpdateUseCase.execute(userRequest);
+    // }
 }

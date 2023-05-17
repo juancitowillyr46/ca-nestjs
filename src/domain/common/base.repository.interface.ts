@@ -1,8 +1,8 @@
-export interface BaseRepositoryInterface<T> {
-    add(entity: T): boolean;
-    readById(id: string): T;
-    readAllById(id: string, queries?: any): T[];
-    readAll(queries?: any): T[];
-    update(id: string, entity: T): boolean;
-    deleteById(id: string): boolean;
+export interface BaseRepositoryInterface {
+    add(entity: any): Promise<boolean>;
+    readById(id: number): Promise<any>;
+    // readAllById(id: number, queries?: any): Response[];
+    // readAll(queries?: any): Response[];
+    // update(id: number, entity: Request): boolean;
+    // deleteById(id: number): boolean;
 }

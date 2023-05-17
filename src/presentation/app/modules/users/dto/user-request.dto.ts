@@ -2,8 +2,8 @@ import { IsNotEmpty } from "class-validator";
 
 export class UserRequestDto {
 
-    @IsNotEmpty()
-    id: string;
+    // @IsNotEmpty()
+    // id: string;
 
     @IsNotEmpty()
     fullname: string;
